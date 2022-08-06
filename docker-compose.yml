@@ -13,6 +13,8 @@ services:
     volumes:
       - ${ROOT_DIR}/docker/plex-config:/config
       - ${ROOT_DATA_DIR}/data/media:/data/media
+    devices:
+      - /dev/dri:/dev/dri
     restart: unless-stopped
 
   # tautulli:
@@ -58,7 +60,7 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - ${ROOT_DIR}/docker/radarr-config:/config
-      - ${ROOT_DIR}/data:/data
+      - ${ROOT_DATA_DIR}/data:/data
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -73,7 +75,7 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - ${ROOT_DIR}/docker/sonarr-config:/config
-      - ${ROOT_DIR}/data:/data
+      - ${ROOT_DATA_DIR}/data:/data
     ports:
       - 8989:8989
     restart: unless-stopped
