@@ -128,6 +128,11 @@ services:
     build:
       context: ${DCONT_PATH}
     restart: unless-stopped
+    container_name: dcont
+    depends_on: 
+      - sonarr
+      - qbittorrent
+      - prowlarr
     volumes:
       - ./dcont-config.yml:/etc/dcont/config.yml
     logging:
