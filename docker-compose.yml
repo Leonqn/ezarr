@@ -16,40 +16,32 @@ services:
     devices:
       - /dev/dri:/dev/dri
     restart: unless-stopped
+    logging:
+      driver: local
+      options:
+        max-size: "50m"
+        max-file: "5"
 
-  # tautulli:
-  #   image: lscr.io/linuxserver/tautulli:latest
-  #   container_name: tautulli
-  #   depends_on:
-  #     - plex
-  #   environment:
-  #     - PUID=${UID}
-  #     - PGID=13000
-  #     - TZ=${TIMEZONE}
-  #   volumes:
-  #     - ${ROOT_DIR}/docker/tautulli-config:/config
-  #   ports:
-  #     - 8181:8181
-  #   restart: unless-stopped
+  tautulli:
+    image: lscr.io/linuxserver/tautulli:latest
+    container_name: tautulli
+    depends_on:
+      - plex
+    environment:
+      - PUID=${UID}
+      - PGID=13000
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${ROOT_DIR}/docker/tautulli-config:/config
+    ports:
+      - 8181:8181
+    restart: unless-stopped
+    logging:
+      driver: local
+      options:
+        max-size: "50m"
+        max-file: "5"
 
-  # jellyfin:
-  #   image: lscr.io/linuxserver/jellyfin:latest
-  #   container_name: jellyfin
-  #   environment:
-  #     - PUID=${UID}
-  #     - PGID=13000
-  #     - UMASK=002
-  #     - TZ=${TIMEZONE}
-  #   volumes:
-  #     - ${ROOT_DIR}/docker/jellyfin-config:/config
-  #     - ${ROOT_DATA_DIR}/data/media:/data/media
-  #   ports:
-  #     - 8096:8096
-  #   restart: unless-stopped
-
-#
-# SERVARR
-#
   radarr:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
@@ -64,6 +56,11 @@ services:
     ports:
       - 7878:7878
     restart: unless-stopped
+    logging:
+      driver: local
+      options:
+        max-size: "50m"
+        max-file: "5"
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -79,50 +76,11 @@ services:
     ports:
       - 8989:8989
     restart: unless-stopped
-
-  # lidarr:
-  #   image: lscr.io/linuxserver/lidarr:latest
-  #   container_name: lidarr
-  #   environment:
-  #     - PUID=13003
-  #     - PGID=13000
-  #     - UMASK=002
-  #     - TZ=${TIMEZONE}
-  #   volumes:
-  #     - ${ROOT_DIR}/docker/lidarr-config:/config
-  #     - ${ROOT_DIR}/data:/data
-  #   ports:
-  #     - 8686:8686
-  #   restart: unless-stopped
-
-  # readarr:
-  #   image: lscr.io/linuxserver/readarr:develop
-  #   container_name: readarr
-  #   environment:
-  #     - PUID=13004
-  #     - PGID=13000
-  #     - UMASK=002
-  #     - TZ=${TIMEZONE}
-  #   volumes:
-  #     - ${ROOT_DIR}/docker/readarr-config:/config
-  #     - ${ROOT_DIR}/data:/data
-  #   ports:
-  #     - 8787:8787
-  #   restart: unless-stopped
-
-  # mylar3:
-  #   image: lscr.io/linuxserver/mylar3:latest
-  #   container_name: mylar3
-  #   environment:
-  #     - PUID=13005
-  #     - PGID=13000
-  #     - UMASK=002
-  #   volumes:
-  #     - ${ROOT_DIR}/docker/mylar-config:/config
-  #     - ${ROOT_DIR}/data:/data
-  #   ports:
-  #     - 8090:8090
-  #   restart: unless-stopped
+    logging:
+      driver: local
+      options:
+        max-size: "50m"
+        max-file: "5"
 
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:develop
@@ -137,20 +95,11 @@ services:
     ports:
       - 9696:9696
     restart: unless-stopped
-
-  # jackett:
-  #   image: lscr.io/linuxserver/jackett:latest
-  #   container_name: jackett
-  #   environment:
-  #     - PUID=13006
-  #     - PGID=13000
-  #     - UMASK=002
-  #     - TZ=${TIMEZONE}
-  #   volumes:
-  #     - ${ROOT_DIR}/docker/jackett-config:/config
-  #   ports:
-  #     - 9117:9117
-  #   restart: unless-stopped
+    logging:
+      driver: local
+      options:
+        max-size: "50m"
+        max-file: "5"
 
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
@@ -169,3 +118,22 @@ services:
       - 6881:6881
       - 6881:6881/udp
     restart: unless-stopped
+    logging:
+      driver: local
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  dcont:
+    build:
+      context: ${DCONT_PATH}
+    restart: unless-stopped
+    volumes:
+      - ./dcont-config.yml:/etc/dcont/config.yml
+    logging:
+      driver: local
+      options:
+        max-size: "50m"
+        max-file: "5"
+    environment:
+      - RUST_LOG=INFO
